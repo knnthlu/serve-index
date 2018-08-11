@@ -235,7 +235,7 @@ serveIndex.plain = function _plain(req, res, files) {
  * @private
  */
 
-function createHtmlFileList(files, dir, useIcons, view) {
+function createHtmlFileList(arr_files, dir, useIcons, view) {
   var html = '<ul id="files" class="view-' + escapeHtml(view) + '">'
     + (view === 'details' ? (
       '<li class="header">'
@@ -243,7 +243,9 @@ function createHtmlFileList(files, dir, useIcons, view) {
       + '<span class="size">Size</span>'
       + '<span class="date">Modified</span>'
       + '</li>') : '');
-
+  var files = arr_files.sort(function(a, b){
+    return new Date(b.stat.mtime) - new Date(a.stat.mtime);
+  })
   html += files.map(function (file) {
     var classes = [];
     var isDir = file.stat && file.stat.isDirectory();
